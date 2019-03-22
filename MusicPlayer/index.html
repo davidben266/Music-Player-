@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Audio Player</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/png" href="favicon.png" />
+    <script src="src/models/MusicPlayer.js"></script>
+    <script src="src/insertData.js"></script>
+    <script src="src/models/MultimediaElement.js"></script>
+    <script src="src/app.js"></script>
+</head>
+<body>
+
+    <div id="mediaPlayer">
+        <div class="mediaContent">
+            <div class="mainLeftBar">
+                <div class="item" data-title="My Songs">
+                    <img src="https://img.icons8.com/nolan/64/000000/micro.png"/>
+                </div>
+                <div class="item" data-title="My Artists">
+                    <img src="https://img.icons8.com/nolan/64/000000/dj.png"/>
+                </div>
+                <div class="item" data-title="My Albums">
+                    <img src="https://img.icons8.com/nolan/64/000000/music-record.png"/>
+                </div>
+                <div class="item" data-title="My Playlists">
+                    <img src="https://img.icons8.com/nolan/64/000000/playlist.png"/>
+                </div>
+                <div class="down" onclick="closeSession()">
+                    <img src="https://img.icons8.com/nolan/64/000000/exit.png"/>
+                </div>
+            </div>
+            <div class="menu">
+                <div class="title" id="title"></div>
+                
+            </div>
+            <div class="content" id="content">
+                <div class="item add">
+                    <i class="fas fa-plus-circle"></i>
+                </div>
+            </div>
+        </div>
+        <div id="controls">
+            <div class="user"></div>
+            <div class="controlBar">
+                <div class="buttons">
+                    <div class="button backward">
+                        <i class="fas fa-backward"></i>
+                    </div>
+                    <div id="play" class="button playPause">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="button forward">
+                        <i class="fas fa-forward"></i>
+                    </div>
+                </div>
+                <div class="volumeControl">
+                    <i class="fas fa-volume-up"></i>
+                </div>
+                <div class="progressBar">
+                    <div class="barShadow"></div>
+                    <div class="bar"></div>
+                    <div class="data">
+                        <div class="current">00:00:00</div>
+                        <div class="total">00:00:00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-popup" id="addArtist">
+        <form class="form-container" id="addArtistForm" onsubmit="createArtist(event)">
+            <div class="header">
+                <img src="https://img.icons8.com/nolan/64/000000/dj.png" />
+                <p name="FormTitle">Add Artist</p>
+            </div>
+
+            <label for="name"><b>Name</b></label>
+            <input type="text" placeholder="Enter Name" name="name" required>
+
+            <label for="artistname"><b>Artist Name</b></label>
+            <input type="text" placeholder="Enter Artist Name" name="artistname" required>
+
+            <label for="age"><b>Age</b></label>
+            <input type="text" placeholder="Enter Artist Age" name="age" required>
+
+            <button type="submit" class="btn" name="submitButton">Add</button>
+            <button type="button" id="cancel-button" class="btn cancel" onclick="closeForm('addArtist')">Close</button>
+        </form>
+    </div>
+
+    <div class="form-popup" id="addAlbum">
+        <form class="form-container" id="addAlbumForm" onsubmit="createAlbum(event)">
+            <div class="header">
+                <img src="https://img.icons8.com/nolan/64/000000/music-record.png" />
+                <p name="FormTitle">Add Album</p>
+            </div>
+
+            <label for="name"><b>Name</b></label>
+            <input type="text" placeholder="Enter Name" name="name" required>
+
+            <label for="songsNumber"><b>Songs Number</b></label>
+            <input type="text" placeholder="Enter Songs Number" name="songsNumber" required>
+
+            <label for="releaseDate"><b>Release Date</b></label>
+            <input type="date" placeholder="Enter releaseDate" name="releaseDate" required>
+
+            <label for="cover"><b>Album Cover</b></label>
+            <input type="text" placeholder="Enter Cover URL" name="cover" required>
+
+            <button type="submit" class="btn" name="submitButton">Add</button>
+            <button type="button" id="cancel-button" class="btn cancel" onclick="closeForm('addAlbum')">Close</button>
+        </form>
+    </div>
+
+    <div class="form-popup" id="addSong">
+        <form class="form-container" id="addSongForm" >
+            <div class="header">
+                <img src="https://img.icons8.com/nolan/64/000000/micro.png" />
+                <p name="FormTitle">Add Song</p>
+            </div>
+
+            <label for="title"><b>Title</b></label>
+            <input type="text" placeholder="Enter Title" id="songTitle" name="title" required>
+            
+            <label for="file"><b>File</b></label>
+            <input type="file" placeholder="Enter Song" id="songFile" name="file" >
+
+            <button type="button" name="submitButton" class="btn" onclick="songData()">Add</button>
+            <button type="button" id="cancel-button" class="btn cancel" onclick="closeForm('addSong')">Close</button>
+        </form>
+    </div>
+
+    <div class="form-popup" id="addPlayList">
+        <form class="form-container" id="addPlayListForm" onsubmit="createPlayList(event)">
+            <div class="header">
+                <img src="https://img.icons8.com/nolan/64/000000/playlist.png" />
+                <p name="FormTitle">Create PlayList</p>
+            </div>
+
+            <label for="name"><b>Name</b></label>
+            <input type="text" placeholder="Enter Name" name="name" required>
+
+            <label for="userPicker"><b>Choose the owner</b></label>
+            <select  id="userPicker"required></select>
+                        
+            <label for="isPublic"><b>Privacity</b></label><br />
+            <input type="radio" name="Public" value="1"  > Public  <br />
+            <input type="radio" name="Private" value="0"> Private<br />
+
+            <button type="submit" name="submitButton"class="btn">Add</button>
+            <button type="button" id="cancel-button" class="btn cancel" onclick="closeForm('addPlayList')">Close</button>
+        </form>
+    </div>
+
+    <div class="form-popup" id="playListInfo">
+        <form class="form-container" id="playListInfoForm">
+            <div class="header">
+                <img src="https://img.icons8.com/nolan/64/000000/playlist.png" />
+                <p>PlayList Information</p>
+            </div>
+
+            <label for="playListName"><b>PlayList's Name</b></label>
+            <input type="text" name="playListName" placeholder="   " readonly>
+            <label for="playListOwner"><b>PlayList's Owner</b></label>
+            <input type="text" name="playListOwner" placeholder="   " readonly>
+            <label for="playListSongs"><b>PlayList's Songs</b></label>
+            <textarea rows="6" name="playListSongs" readonly id="playListSongs" placeholder=" "> </textarea>
+            <button type="button" class="btn" onclick="showSongsPlayListAdd()">Add Song</button>
+            <button type="button" id="cancel-button" class="btn cancel" onclick="closeForm('playListInfo')">Close</button>
+        </form>
+    </div>
+   
+    <div class="song_playList" id="addSongsPlayList">
+        <form class="song_playList_container" id="addSongsPlayListForm" onsubmit="addSongToPlayList(event)">
+            <div class="header">
+                <img src="https://img.icons8.com/nolan/64/000000/micro.png" />
+                <p>Add Song to PlayList</p>
+            </div>
+
+            <label for="songPicker"><b>Choose your song</b></label>
+            <select  id="songPicker"required></select>
+            <button type="submit" class="btn">Add</button>
+            <button type="button" id="cancel-button" class="btn cancel" onclick="closeForm('addSongsPlayList')">Close</button>
+        </form>
+    </div>   
+    
+    <div class="deleteMenu" id="deleteMenu">
+        <div class="item" id="delete">Delete</div>
+        <div class="item" id="update">Update</div>
+
+    </div>
+    
+</body>
+</html>
